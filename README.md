@@ -15,14 +15,15 @@ This release has a major api change. Please check the [migration guide](https://
 ## Install
 
 ```toml
-deboa = { version = "0.1.0-beta.23" }
+deboa = { version = "0.1.3" }
 ```
 
 ## Runtimes
 
-- [tokio](https://github.com/tokio-rs/tokio)
-- [smol](https://github.com/smol-rs/smol)
+- [compio](https://github.com/compio-rs/compio)
 - [glommio](https://github.com/DataDog/glommio)
+- [smol](https://github.com/smol-rs/smol)
+- [tokio](https://github.com/tokio-rs/tokio)
 
 ## Usage
 
@@ -57,15 +58,7 @@ async fn main() -> Result<()> {
 
 ### [deboa](https://github.com/ararog/deboa/tree/develop/deboa)
 
-The core create of http client.
-
-### deboa-bora (removed)
-
-A crate with bora macro, for easy rest client generation. Bora macro is now part of vamo-macros.
-
-### deboa-extras (moved)
-
-Deboa-extras has moved to <https://github.com/ararog/deboa-contrib>.
+Top level project with runtime agnostic http client API.
 
 ### [deboa-macros](https://github.com/ararog/deboa/tree/develop/deboa-macros)
 
@@ -73,21 +66,21 @@ A crate with collection of convenience macros for deboa. It is close equivalent 
 apisauce for axios, where one macro does it all, from request to response.
 It used to be the home of bora macro, which has been moved to vamo-macros crate.
 
-### [deboa-compio](https://github.com/ararog/deboa/tree/develop/deboa-compio)
+### deboa-compio (moved)
 
-Deboa implementation for compio runtime.
+Deboa implementation for compio runtime to <https://github.com/ararog/deboa-compio>.
 
-### [deboa-glommio](https://github.com/ararog/deboa/tree/develop/deboa-glommio)
+### deboa-glommio (moved)
 
-Deboa implementation for glommio runtime.
+Deboa implementation for glommio runtime to <https://github.com/ararog/deboa-glommio>.
 
-### [deboa-smol](https://github.com/ararog/deboa/tree/develop/deboa-smol)
+### deboa-smol (moved)
 
-Deboa implementation for smol runtime.
+Deboa implementation for smol runtime to <https://github.com/ararog/deboa/deboa-smol>.
 
-### [deboa-tokio](https://github.com/ararog/deboa/tree/develop/deboa-tokio)
+### deboa-tokio (moved)
 
-Deboa implmentation for tokio runtime.
+Deboa implmentation for tokio runtime to <https://github.com/ararog/deboa/deboa-tokio>.
 
 ### vamo (moved)
 

@@ -589,7 +589,7 @@ checksum = "460fbee9c2c2f33933d720630a6a0bac33ba7053db5344fac858d4b8952d77d5"
 
 [[package]]
 name = "deboa"
-version = "0.1.3"
+version = "0.1.5-beta.1"
 dependencies = [
  "async-lock",
  "base64",
@@ -621,18 +621,49 @@ dependencies = [
 ]
 
 [[package]]
-name = "deboa-extras"
-version = "0.1.0"
+name = "deboa"
+version = "0.1.5-beta.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "53d5d2b7104a58c2e3464fc2de1112bfcec4673a7d5d3c800924bdc040b397f1"
+checksum = "1e3ea2d0968fb1ada5f11bbe9b83e480db8ec44324662143e986dfa773917a1c"
+dependencies = [
+ "async-lock",
+ "base64",
+ "bytes",
+ "cookie",
+ "futures",
+ "hashbrown 0.17.1",
+ "http",
+ "http-body",
+ "http-body-util",
+ "hyper",
+ "hyper-body-utils",
+ "hyper-util",
+ "indexmap",
+ "log",
+ "minimime",
+ "rand",
+ "regex",
+ "serde",
+ "tackle",
+ "thiserror 2.0.20",
+ "url",
+ "urlencoding",
+]
+
+[[package]]
+name = "deboa-extras"
+version = "0.1.1-beta.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1b7d25e115de27e594af18680b22fa5f2e79db058971c2d3b37ea210c9782ac0"
 dependencies = [
  "bytes",
- "deboa",
+ "deboa 0.1.5-beta.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "futures",
  "http",
  "http-body-util",
  "hyper",
  "hyper-body-utils",
+ "log",
  "mime",
  "mime_typed",
  "pin-project-lite",
@@ -640,21 +671,22 @@ dependencies = [
  "serde",
  "serde-xml-rust",
  "simd-json",
+ "tackle",
  "thiserror 2.0.20",
  "url",
 ]
 
 [[package]]
 name = "deboa-macros"
-version = "0.1.0"
+version = "0.1.0-beta.6"
 dependencies = [
- "deboa",
+ "deboa 0.1.5-beta.1",
  "deboa-extras",
  "http",
  "proc-macro2",
  "quote",
  "serde",
- "syn 3.0.3",
+ "syn 3.0.4",
 ]
 
 [[package]]
@@ -671,7 +703,7 @@ checksum = "c6232dd377dcc64799954cbd3a9bb882e9cdc1308ccd87b1c098f1fb2eaf82a8"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 3.0.3",
+ "syn 3.0.4",
 ]
 
 [[package]]
@@ -845,7 +877,7 @@ checksum = "9fb9654ba8355388abeb8dcb4fc62f511300867002afc858860463bdd9fe0c44"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 3.0.3",
+ "syn 3.0.4",
 ]
 
 [[package]]
@@ -1615,7 +1647,7 @@ checksum = "1c8d9ca532f185d5d4db7a7c9d51420b452168ea1c2b913953281bd6fe1fcbd0"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 3.0.3",
+ "syn 3.0.4",
 ]
 
 [[package]]
@@ -1702,7 +1734,7 @@ checksum = "92ecd8964f8453721699a1ed72037b0db49ce2f5a5138486ee89bed6f67cdf3a"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 3.0.3",
+ "syn 3.0.4",
 ]
 
 [[package]]
@@ -1766,7 +1798,7 @@ checksum = "1c25ef604ac7dd839d44d64648952ea23c97866f124ff671b0ed2cf3ad9bb06e"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 3.0.3",
+ "syn 3.0.4",
 ]
 
 [[package]]
@@ -1884,7 +1916,7 @@ checksum = "e7a5d71263a5a7d47b41f6b3f06ba276f10cc18b0931f1799f710578e2309348"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 3.0.3",
+ "syn 3.0.4",
 ]
 
 [[package]]
@@ -1927,9 +1959,9 @@ dependencies = [
 
 [[package]]
 name = "simd-json"
-version = "0.17.3"
+version = "0.18.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e32d7ab2678282d21e53374fbead7119b7eacbede73685dcaac472870a29a11c"
+checksum = "6ebe141eb4a23ecc4d5de93fa5b139ac65dc07c38037a2fe9a8fb7c9d36bd832"
 dependencies = [
  "halfbrown",
  "ref-cast",
@@ -2073,9 +2105,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "3.0.3"
+version = "3.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "53e9bae58849f64dfa4f5d5ae372c8341f7305f82a3868709269343628b659a3"
+checksum = "e6275cddf4610d1775e6d1fe9469b2e77d0f39fd98fb7450901b821e0c53649f"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2157,7 +2189,7 @@ checksum = "bc04cd3e1236dd4a98afca4569f2deb3f120e5422a4023be2cb683f8486292af"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 3.0.3",
+ "syn 3.0.4",
 ]
 
 [[package]]
@@ -2667,7 +2699,7 @@ checksum = "34df6fc39dbd26ddc9c10e6a2984476e13acce22e64e4487636ef494369225da"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 3.0.3",
+ "syn 3.0.4",
 ]
 
 [[package]]

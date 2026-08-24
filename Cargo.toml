@@ -23,8 +23,8 @@ base64 = { version = "0.23.0" }
 bytes = { version = "1.11" }
 caramelo = "0.1.2"
 cookie = { version = "0.18.1" }
-deboa = { path = "deboa" }
-deboa-extras = { version = ">= 0.0.9" }
+deboa = { path = "deboa", version = "0.1.5-beta.1" }
+deboa-extras = { version = "0.1.1-beta.1" }
 hashbrown = "0.17.1"
 http = "1"
 hyper = { version = "1.8.1", features = ["client"], default-features = false }
@@ -36,7 +36,7 @@ hyper-util = { version = "0.1.20", features = [
 multer = "3.1.0"
 rstest = "0.26.1"
 serde = { version = "1.0.217", features = ["derive"] }
-tackle = { version = "0.1.1"}
+tackle = { version = "0.1.1" }
 
 [profile.test]
 lto = false
@@ -47,11 +47,3 @@ opt-level = "z"
 lto = true
 codegen-units = 1
 panic = "abort"
-
-# The bindings depend on the *published* `deboa`, so a change to the core cannot
-# be built or tested locally without this. A patch rather than a path dependency
-# because `deboa-extras`, `vamo` and `deboa-fory` also depend on the published
-# crate — a path dep puts two versions of `deboa` in the graph and their traits
-# stop matching.
-[patch.crates-io]
-deboa = { path = "deboa" }
