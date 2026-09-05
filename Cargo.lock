@@ -238,9 +238,9 @@ checksum = "fc652a48c352aef3ea3aed32080501cf3ef6ed5da78602a020c991775b0aff04"
 
 [[package]]
 name = "caramelo"
-version = "0.1.2"
+version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33deef64af530d522c35bdb407bfdb2f2c6a8062890c64828067e64805ec95ce"
+checksum = "46c183e5a6cd3fa6f43730ca58bcc6d02e595ba31ea87b7c60271b759a264794"
 dependencies = [
  "bytes",
  "http",
