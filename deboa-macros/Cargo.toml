@@ -1,6 +1,6 @@
 [package]
 name = "deboa-macros"
-version = "0.1.0-beta.6"
+version = "0.1.0-beta.7"
 edition.workspace = true
 authors.workspace = true
 repository.workspace = true
@@ -30,4 +30,4 @@ http = { workspace = true }
 proc-macro2 = "1.0.107"
 quote = "1.0.47"
 serde =  { workspace = true }
-syn = "3.0.4"
+syn = "3.0.5"
