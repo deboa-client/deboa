@@ -19,7 +19,7 @@ use std::{future::Future, net::IpAddr};
 ///
 /// `impl Future` in trait position matches the style the connection traits in
 /// [`crate::conn`] already use.
-pub trait DnsResolver: Send + Sync + 'static {
+pub trait DnsResolver: Send + 'static {
     /// Resolves a hostname to a list of IP addresses.
     fn resolve(&self, host: String, port: u16) -> impl Future<Output = Result<Vec<IpAddr>>>;
 }

@@ -134,6 +134,23 @@ pub struct DeboaResponseBuilder {
 }
 
 impl DeboaResponseBuilder {
+    /// Allow set response version at any time.
+    ///
+    /// # Arguments
+    ///
+    /// * `version` - The new version.
+    ///
+    /// # Returns
+    ///
+    /// * `Self` - The response builder.
+    ///
+    pub fn version(mut self, version: http::Version) -> Self {
+        *self
+            .inner
+            .version_mut() = version;
+        self
+    }
+
     /// Allow set response status at any time.
     ///
     /// # Arguments
@@ -204,9 +221,10 @@ impl DeboaResponseBuilder {
     ///
     #[inline]
     pub fn body<B: IntoBody>(mut self, body: B) -> Self {
-        *self
+        let parts = self
             .inner
-            .body_mut() = body.into_body();
+            .into_parts();
+        self.inner = Response::from_parts(parts.0, body.into_body());
         self
     }
 
@@ -303,6 +321,7 @@ impl Debug for DeboaResponse {
         f.debug_struct("DeboaResponse")
             .field("status", &self.inner.status())
             .field("headers", &self.inner.headers())
+            .field("version", &self.inner.version())
             .finish()
     }
 }
@@ -335,6 +354,28 @@ impl DeboaResponse {
     #[inline]
     pub fn builder() -> DeboaResponseBuilder {
         DeboaResponseBuilder { inner: Response::new(HttpBody::from_bytes(&[])) }
+    }
+
+    /// Allow get version at any time.
+    ///
+    /// # Returns
+    ///
+    /// * `http::Version` - The version of the response.
+    ///
+    #[inline]
+    pub fn version(&self) -> http::Version {
+        self.inner.version()
+    }
+
+    /// Allow get mutable version at any time.
+    ///
+    /// # Returns
+    ///
+    /// * `&mut http::Version` - The version of the response.
+    ///
+    pub fn version_mut(&mut self) -> &mut http::Version {
+        self.inner
+            .version_mut()
     }
 
     /// Allow get status code at any time.

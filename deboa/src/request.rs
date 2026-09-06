@@ -66,13 +66,16 @@
 //! ```
 
 use crate::{
+    cert::{Certificate, Identity},
+    conn::HttpConnectionPool,
     cookie::DeboaCookie,
+    dns::DnsResolver,
     errors::{DeboaError, RequestError},
     form::{DeboaForm, Form},
     response::DeboaResponse,
     serde::RequestBody,
     url::IntoUrl,
-    HttpClient, Result,
+    Client, HttpClient, InnerClient, Result,
 };
 use base64::{engine::general_purpose::STANDARD, Engine as _};
 use bytes::Bytes;
@@ -273,47 +276,6 @@ impl MethodExt for &str {
     }
 }
 
-#[deprecated(note = "Use FetchWith trait instead", since = "0.0.8")]
-/// Trait to allow make a get request from different types.
-pub trait Fetch {
-    /// Fetch the request.
-    ///
-    /// # Returns
-    ///
-    /// * `Result<DeboaResponse>` - The response.
-    ///
-    /// # Examples
-    ///
-    /// ```rust,compile_fail
-    /// use deboa::{request::Fetch};
-    /// use deboa_tokio::Client;
-    ///
-    /// let client = Client::new();
-    ///
-    /// let response = "https://jsonplaceholder.typicode.com"
-    ///   .fetch(&client)
-    ///   .await?;
-    /// assert_eq!(response.status(), 200);
-    /// ```
-    ///
-    fn fetch<T>(&self, client: T) -> impl Future<Output = Result<DeboaResponse>>
-    where
-        T: HttpClient + Send;
-}
-
-#[allow(deprecated)]
-impl Fetch for &str {
-    #[inline]
-    async fn fetch<T>(&self, ref client: T) -> Result<DeboaResponse>
-    where
-        T: HttpClient + Send,
-    {
-        DeboaRequest::get(*self)?
-            .send_with(client)
-            .await
-    }
-}
-
 /// Trait to allow make a get request from different types.
 ///
 /// # Examples
@@ -349,16 +311,28 @@ pub trait FetchWith {
     /// assert_eq!(response.status(), 200);
     /// ```
     ///
-    fn fetch_with<T>(&self, client: T) -> impl Future<Output = Result<DeboaResponse>>
+    fn fetch_with<I, C, P, R>(
+        &self,
+        client: &Client<InnerClient<I, C, P, R>>,
+    ) -> impl Future<Output = Result<DeboaResponse>>
     where
-        T: HttpClient;
+        I: Identity + Send + Clone,
+        C: Certificate + Send + Clone,
+        P: HttpConnectionPool<Identity = I, Certificate = C> + Send,
+        R: DnsResolver + Send;
 }
 
 impl FetchWith for &str {
     #[inline]
-    async fn fetch_with<T>(&self, ref client: T) -> Result<DeboaResponse>
+    async fn fetch_with<I, C, P, R>(
+        &self,
+        client: &Client<InnerClient<I, C, P, R>>,
+    ) -> Result<DeboaResponse>
     where
-        T: HttpClient,
+        I: Identity + Send + Clone,
+        C: Certificate + Send + Clone,
+        P: HttpConnectionPool<Identity = I, Certificate = C> + Send,
+        R: DnsResolver + Send,
     {
         DeboaRequest::get(*self)?
             .send_with(client)
@@ -368,9 +342,15 @@ impl FetchWith for &str {
 
 impl FetchWith for String {
     #[inline]
-    async fn fetch_with<T>(&self, ref client: T) -> Result<DeboaResponse>
+    async fn fetch_with<I, C, P, R>(
+        &self,
+        client: &Client<InnerClient<I, C, P, R>>,
+    ) -> Result<DeboaResponse>
     where
-        T: HttpClient,
+        I: Identity + Send + Clone,
+        C: Certificate + Send + Clone,
+        P: HttpConnectionPool<Identity = I, Certificate = C> + Send,
+        R: DnsResolver + Send,
     {
         DeboaRequest::get(self)?
             .send_with(client)
@@ -706,11 +686,15 @@ impl DeboaRequestBuilder {
     /// ```
     ///
     #[inline]
-    pub fn header(mut self, key: HeaderName, value: &str) -> Self {
+    pub fn header(mut self, key: HeaderName, value: &str) -> Result<Self> {
         self.inner
             .headers_mut()
-            .insert(key, HeaderValue::from_str(value).unwrap());
-        self
+            .insert(
+                key,
+                HeaderValue::from_str(value)
+                    .map_err(|e| DeboaError::Header { message: e.to_string() })?,
+            );
+        Ok(self)
     }
 
     /// Set the cookies of the request.
@@ -724,7 +708,7 @@ impl DeboaRequestBuilder {
     /// * `Self` - The request builder.
     ///
     #[inline]
-    pub fn cookies(mut self, cookies: HashMap<String, DeboaCookie>) -> Self {
+    pub fn cookies(mut self, cookies: HashMap<String, DeboaCookie>) -> Result<Self> {
         self.inner
             .headers_mut()
             .insert(
@@ -736,9 +720,9 @@ impl DeboaRequestBuilder {
                         .collect::<Vec<_>>()
                         .join("; "),
                 )
-                .unwrap(),
+                .map_err(|e| DeboaError::Cookie { message: e.to_string() })?,
             );
-        self
+        Ok(self)
     }
 
     /// Add a cookie to the request.
@@ -752,7 +736,7 @@ impl DeboaRequestBuilder {
     /// * `Self` - The request builder.
     ///
     #[inline]
-    pub fn cookie(mut self, cookie: DeboaCookie) -> Self {
+    pub fn cookie(mut self, cookie: DeboaCookie) -> Result<Self> {
         if let Some(cookies) = self
             .inner
             .headers_mut()
@@ -760,19 +744,21 @@ impl DeboaRequestBuilder {
         {
             let cookie_str = cookies
                 .to_str()
-                .unwrap();
+                .map_err(|e| DeboaError::Cookie { message: e.to_string() })?;
+
             let cookie_str = format!("{}; {}={}", cookie_str, cookie.name(), cookie.value());
-            *cookies = HeaderValue::from_str(&cookie_str).unwrap();
+            *cookies = HeaderValue::from_str(&cookie_str)
+                .map_err(|e| DeboaError::Cookie { message: e.to_string() })?;
         } else {
             self.inner
                 .headers_mut()
                 .insert(
                     header::COOKIE,
                     HeaderValue::from_str(&format!("{}={}", cookie.name(), cookie.value()))
-                        .unwrap(),
+                        .map_err(|e| DeboaError::Cookie { message: e.to_string() })?,
                 );
         }
-        self
+        Ok(self)
     }
 
     /// Set multipart form of the request.
@@ -794,8 +780,8 @@ impl DeboaRequestBuilder {
     /// use deboa::form::MultiPartForm;
     ///
     /// let mut form = MultiPartForm::builder();
-    /// form.field("name", "deboa");
-    /// form.field("version", "0.0.1");
+    ///     .field("name", "deboa");
+    ///     .field("version", "0.0.1");
     ///
     /// let request = post("https://jsonplaceholder.typicode.com/posts")?
     ///   .form(form.into())
@@ -809,14 +795,12 @@ impl DeboaRequestBuilder {
             Form::EncodedForm(form) => (form.content_type(), form.build()),
             Form::MultiPartForm(form) => (form.content_type(), form.build()),
         };
-        match HeaderValue::from_str(content_type.as_str()) {
-            Ok(value) => {
-                self.inner
-                    .headers_mut()
-                    .insert(header::CONTENT_TYPE, value);
-            }
-            Err(err) => return Err(DeboaError::Header { message: err.to_string() }),
-        }
+        let header_value = HeaderValue::from_str(&content_type)
+            .map_err(|e| DeboaError::Header { message: e.to_string() })?;
+        self.inner
+            .headers_mut()
+            .insert(header::CONTENT_TYPE, header_value);
+
         *self
             .inner
             .body_mut() = HttpBody::from_bytes(&body);
@@ -883,8 +867,8 @@ impl DeboaRequestBuilder {
     #[inline]
     pub fn body_as<T: RequestBody, B: Serialize>(self, body_type: T, body: B) -> Result<Self> {
         Ok(self
-            .header(header::CONTENT_TYPE, body_type.mime_type())
-            .header(header::ACCEPT, body_type.mime_type())
+            .header(header::CONTENT_TYPE, body_type.mime_type())?
+            .header(header::ACCEPT, body_type.mime_type())?
             .body(HttpBody::from_bytes(&body_type.serialize(body)?)))
     }
 
@@ -912,7 +896,7 @@ impl DeboaRequestBuilder {
     /// assert_eq!(response.status(), 201);
     /// ```
     #[inline]
-    pub fn bearer_auth(self, token: &str) -> Self {
+    pub fn bearer_auth(self, token: &str) -> Result<Self> {
         self.header(header::AUTHORIZATION, format!("Bearer {token}").as_str())
     }
 
@@ -941,7 +925,7 @@ impl DeboaRequestBuilder {
     /// assert_eq!(response.status(), 201);
     /// ```
     #[inline]
-    pub fn basic_auth(self, username: &str, password: &str) -> Self {
+    pub fn basic_auth(self, username: &str, password: &str) -> Result<Self> {
         self.header(
             header::AUTHORIZATION,
             format!("Basic {}", STANDARD.encode(format!("{username}:{password}"))).as_str(),

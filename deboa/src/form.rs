@@ -131,7 +131,7 @@ pub trait DeboaForm {
     ///
     /// * `&mut Self` - The form.
     ///
-    fn field(&mut self, key: &str, value: &str) -> &mut Self;
+    fn field(self, key: &str, value: &str) -> Self;
     /// Build the form.
     ///
     /// # Returns
@@ -216,7 +216,7 @@ impl DeboaForm for EncodedForm {
     }
 
     #[inline]
-    fn field(&mut self, key: &str, value: &str) -> &mut Self {
+    fn field(mut self, key: &str, value: &str) -> Self {
         self.fields
             .insert(key.to_string(), value.to_string());
         self
@@ -323,7 +323,7 @@ impl DeboaForm for MultiPartForm {
     }
 
     #[inline]
-    fn field(&mut self, key: &str, value: &str) -> &mut Self {
+    fn field(mut self, key: &str, value: &str) -> Self {
         self.fields
             .insert(key.to_string(), value.to_string());
         self

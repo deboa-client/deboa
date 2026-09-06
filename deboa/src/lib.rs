@@ -9,11 +9,12 @@ use crate::{
     response::DeboaResponse,
 };
 use async_lock::RwLock;
+use http::Version;
 use log::info;
 use std::{
     future::Future,
     net::{IpAddr, Ipv4Addr},
-    ops::Shl,
+    ops::{Deref, Shl},
     time::Duration,
 };
 use tackle::{Chain, Hook, HookFn};
@@ -31,6 +32,53 @@ pub mod serde;
 #[cfg(test)]
 pub mod tests;
 pub mod url;
+
+/// Type for ALPN protocol
+pub struct Alpn<'a>(&'a str);
+
+impl<'a> Alpn<'a> {
+    /// Create a new alpn from code as string
+    pub fn new(code: &'a str) -> Self {
+        Alpn(code)
+    }
+}
+
+impl<'a> Deref for Alpn<'a> {
+    type Target = &'a str;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl<'a> From<Alpn<'a>> for &'a [u8] {
+    fn from(value: Alpn<'a>) -> Self {
+        *&value.as_bytes()
+    }
+}
+
+impl<'a> From<Alpn<'a>> for Version {
+    fn from(value: Alpn<'a>) -> Self {
+        let alpn = *value;
+        match alpn {
+            "http/1.1" => Version::HTTP_11,
+            "h2" => Version::HTTP_2,
+            "h3" => Version::HTTP_3,
+            _ => panic!("Invalid ALPN"),
+        }
+    }
+}
+
+impl<'a> From<Version> for Alpn<'a> {
+    fn from(value: Version) -> Self {
+        match value {
+            Version::HTTP_11 => Alpn("http/1.1"),
+            Version::HTTP_2 => Alpn("h2"),
+            Version::HTTP_3 => Alpn("h3"),
+            _ => Alpn("none"),
+        }
+    }
+}
 
 /// Type alias for Result<T, DeboaError>
 /// Convenience alias for handling Deboa errors throughout the library.
@@ -84,6 +132,15 @@ pub type DeboaResult<T> = Result<T>;
 /// HTTP client trait
 pub trait HttpClient {
     /// Execute a request
+    ///
+    /// # Argument
+    ///
+    /// - `request` - Request to be sent to server
+    ///
+    /// # Returns
+    ///
+    /// - `Result<DeboaResponse>` - A result containing response
+    ///
     fn execute<R>(&self, request: R) -> impl Future<Output = Result<DeboaResponse>>
     where
         R: IntoRequest;
@@ -102,46 +159,81 @@ where
     R: DnsResolver + Default + Send + 'static,
 {
     /// Set skip certificate verification
+    ///
+    /// # Arguments
+    ///
+    /// - `skip` - True to skip server certificate verification, false otherwise
+    ///
     pub fn skip_cert_verification(mut self, skip: bool) -> Self {
         self.inner
             .skip_cert_verification = skip;
         self
     }
 
-    /// Set connection timeout
+    /// Allow set connection timeout
+    ///
+    /// # Arguments
+    ///
+    /// - `connection_timeout` - Duration for connection timeout
+    ///
     pub fn connection_timeout(mut self, connection_timeout: Duration) -> Self {
         self.inner
             .connection_timeout = connection_timeout;
         self
     }
 
-    /// Set request timeout
+    /// Allow set request timeout
+    ///
+    /// # Arguments
+    ///
+    /// - `request_timeout` - Duration for request timeout
+    ///
     pub fn request_timeout(mut self, request_timeout: Duration) -> Self {
         self.inner
             .request_timeout = request_timeout;
         self
     }
 
-    /// Set certificate
+    /// Allow set certificate
+    ///
+    /// # Arguments
+    ///
+    /// - `certificate` - Custom CA certificate
+    ///
     pub fn certificate(mut self, certificate: C) -> Self {
         self.inner
             .certificate = Some(certificate);
         self
     }
 
-    /// Set identity
+    /// Allow set identity
+    ///
+    /// # Arguments
+    ///
+    /// - `identity` - A client certificate to be used for mTLS
+    ///
     pub fn identity(mut self, identity: I) -> Self {
         self.inner.identity = Some(identity);
         self
     }
 
-    /// Set client bind address
+    /// Allow set client bind address
+    ///
+    /// # Arguments
+    ///
+    /// - `dns_resolver` - A DnsResolver trait implementation
+    ///
     pub fn bind_addr(mut self, bind_addr: IpAddr) -> Self {
         self.inner.bind_addr = bind_addr;
         self
     }
 
-    /// Set dns resolver
+    /// Allow set dns resolver
+    ///
+    /// # Arguments
+    ///
+    /// - `dns_resolver` - A DnsResolver trait implementation
+    ///
     pub fn dns_resolver(mut self, dns_resolver: R) -> Self {
         self.inner
             .dns_resolver = dns_resolver;
@@ -151,6 +243,40 @@ where
     /// Set connction pool
     pub fn connection_pool(mut self, pool: P) -> Self {
         self.inner.pool = RwLock::new(pool);
+        self
+    }
+
+    /// Allow set supported protocols
+    ///
+    /// # Arguments
+    ///
+    /// - `protos` - List of protocols supported by client
+    ///
+    /// # Notes
+    ///
+    /// This setting allow to specify which protocol versions
+    /// are supported by client while doing ALPN during TLS handshake.
+    ///
+    pub fn protos(mut self, protos: Vec<Version>) -> Self {
+        self.inner.protos = protos;
+        self
+    }
+
+    /// Set prior knowledge flag
+    ///
+    /// # Arguments
+    ///
+    /// - `prior_knowledge` - A bool value indicating about prior knowledge
+    ///
+    /// # Notes
+    ///
+    /// This setting tells HTTP client to create connection
+    /// using protocol specified on request, set it to false
+    /// if you want protocol discovery using ALPN/Alt Svc.
+    ///
+    pub fn prior_knowledge(mut self, prior_knowledge: bool) -> Self {
+        self.inner
+            .prior_knowledge = prior_knowledge;
         self
     }
 
@@ -170,11 +296,29 @@ where
     H: Hook<DeboaRequest, DeboaResponse, Result = Result<DeboaResponse>> + 'static,
 {
     /// Initialize a client from hook
+    ///
+    /// # Arguments
+    ///
+    /// - `inner` - A existing hook
+    ///
+    /// # Returns
+    ///
+    /// - `Self` - New client
+    ///
     pub fn new(inner: H) -> Self {
         Self { hook: inner }
     }
 
     /// Add a new hook to the chain
+    ///
+    /// # Arguments
+    ///
+    /// - `chain` - A existing chain to add
+    ///
+    /// # Returns
+    ///
+    /// - `Client<Hout>` - A client with hook in
+    ///
     pub fn chain<C, Hout>(self, chain: C) -> Client<Hout>
     where
         C: Chain<H, DeboaError, DeboaRequest, DeboaResponse, Hook = Hout>,
@@ -184,6 +328,44 @@ where
     }
 
     /// Add a hook from a function
+    ///
+    /// # Arguments
+    ///
+    /// - `f` - A function/closure which contains hook logic
+    ///
+    /// # Returns
+    ///
+    /// - `Client<Hout>` - A client with hook in
+    ///
+    /// # Example
+    ///
+    /// ```rust,ignore
+    /// use deboa::{Result, request::DeboaRequest, response::DeboaResponse};
+    /// use deboa_tokio::Client;
+    /// use tackle::{Chain, Hook, NextHook};
+    ///
+    /// #[tokio::main]
+    /// async fn main() -> Result<()> {
+    ///   // Create a new client with default settings
+    ///   let client = Client::builder()
+    ///     .connection_timeout(10)  // 10 seconds
+    ///     .request_timeout(30)     // 30 seconds
+    ///     .build();
+    ///
+    ///   let client = client
+    ///     .chain_fn(|req, next| async move {
+    ///        println!("Request 1: {:?}", req);
+    ///        next.call(req).await
+    ///     });
+    ///
+    ///   let request = DeboaRequest::get("https://example.com/posts/1")?.build()?;
+    ///   let response: DeboaResponse = client
+    ///     .execute(request)
+    ///     .await?;
+    ///
+    ///   Ok(())
+    /// }
+    /// ```
     pub fn chain_fn<F, Fut>(self, f: F) -> Client<HookFn<F, H>>
     where
         F: Fn(DeboaRequest, std::rc::Rc<H>) -> Fut + Send,
@@ -195,6 +377,14 @@ where
 
 impl<F, H> Client<HookFn<F, H>> {
     /// Initialize a client from hook
+    ///
+    /// # Arguments
+    ///
+    /// - `inner` - HookFn<F, H> - A existing hook
+    ///
+    /// # Returns
+    ///
+    /// - `Self` - A new client
     pub fn from_fn(inner: HookFn<F, H>) -> Self {
         Self { hook: inner }
     }
@@ -208,11 +398,25 @@ where
     R: DnsResolver + Default + Send,
 {
     /// Create a client from inner client
+    ///
+    /// # Arguments
+    ///
+    /// - `inner` - A inner client
+    ///
+    /// # Returns
+    ///
+    /// - `Self` - A new client instance
+    ///
     pub fn from_inner(inner: InnerClient<I, C, P, R>) -> Self {
         Self { hook: inner }
     }
 
     /// Returns a new builer
+    ///
+    /// # Returns
+    ///
+    /// - `ClientBuilder<I, C, P. R>` - A new client builder
+    ///
     pub fn builder() -> ClientBuilder<I, C, P, R> {
         ClientBuilder { inner: InnerClient::<I, C, P, R>::default() }
     }
@@ -283,8 +487,9 @@ where
 ///
 /// - Connection pooling for better performance
 /// - Configurable timeouts
-/// - Support for multiple HTTP protocols (HTTP/1.1, HTTP/2)
+/// - Support for multiple HTTP protocols (HTTP/1.1, HTTP/2 and HTTP/3)
 /// - Thread-safe and `Send` + `Sync`
+/// - Prior knowlege support
 ///
 /// # Examples
 ///
@@ -327,6 +532,8 @@ pub struct InnerClient<I, C, P, R> {
     pool: RwLock<P>,
     dns_resolver: R,
     bind_addr: IpAddr,
+    protos: Vec<Version>,
+    prior_knowledge: bool,
 }
 
 impl<I, C, P, R> InnerClient<I, C, P, R> {
@@ -345,7 +552,7 @@ impl<I, C, P, R> InnerClient<I, C, P, R> {
     ///
     /// # Returns
     ///
-    /// * `Duration` - The timeout.
+    /// * `Duration` - The connection timeout.
     ///
     pub fn connection_timeout(&self) -> Duration {
         self.connection_timeout
@@ -356,7 +563,7 @@ impl<I, C, P, R> InnerClient<I, C, P, R> {
     ///
     /// # Returns
     ///
-    /// * `Duration` - The timeout.
+    /// * `Duration` - The request timeout.
     ///
     pub fn request_timeout(&self) -> Duration {
         self.request_timeout
@@ -415,6 +622,28 @@ impl<I, C, P, R> InnerClient<I, C, P, R> {
     pub fn identity(&self) -> &Option<I> {
         &self.identity
     }
+
+    /// Allow get supported protocols
+    ///
+    /// # Returns
+    ///
+    /// * `Vec<Verstion>` - A vector of supported protocols
+    ///
+    #[inline]
+    pub fn protos(&self) -> &Vec<Version> {
+        &self.protos
+    }
+
+    /// Allow get prior knowledge
+    ///
+    /// # Returns
+    ///
+    /// * `bool` - A request version implies prior knowledge
+    ///
+    #[inline]
+    pub fn prior_knowledge(&self) -> bool {
+        self.prior_knowledge
+    }
 }
 
 impl<I, C, P, R> Default for InnerClient<I, C, P, R>
@@ -434,6 +663,8 @@ where
             skip_cert_verification: false,
             pool: RwLock::new(P::default()),
             dns_resolver: R::default(),
+            protos: vec![Version::HTTP_11],
+            prior_knowledge: false,
         }
     }
 }
@@ -471,8 +702,8 @@ where
             .port_u16()
             .unwrap_or({
                 match scheme {
-                    "http" => 80,
-                    "https" => 443,
+                    "http" | "ws" => 80,
+                    "https" | "wss" => 443,
                     _ => 80,
                 }
             });

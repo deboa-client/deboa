@@ -23,6 +23,7 @@ pub struct ConnectionConfigBuilder<'a, I, C> {
     certificate: Option<&'a C>,
     skip_cert_verification: bool,
     client_bind_addr: IpAddr,
+    prior_knowledge: bool,
 }
 
 impl<'a, I, C> ConnectionConfigBuilder<'a, I, C>
@@ -45,6 +46,7 @@ where
             client_bind_addr: "0.0.0.0"
                 .parse()
                 .unwrap(),
+            prior_knowledge: false,
         }
     }
 
@@ -102,6 +104,12 @@ where
         self
     }
 
+    /// Set whether to prior knowdlege of protocol support.
+    pub fn prior_knowledge(mut self, prior_knowledge: bool) -> Self {
+        self.prior_knowledge = prior_knowledge;
+        self
+    }
+
     /// Build the connection configuration.
     pub fn build(self) -> ConnectionConfig<'a, I, C> {
         ConnectionConfig {
@@ -114,6 +122,7 @@ where
             certificate: self.certificate,
             skip_cert_verification: self.skip_cert_verification,
             client_bind_addr: self.client_bind_addr,
+            prior_knowledge: self.prior_knowledge,
         }
     }
 }
@@ -129,6 +138,7 @@ pub struct ConnectionConfig<'a, I, C> {
     certificate: Option<&'a C>,
     skip_cert_verification: bool,
     client_bind_addr: IpAddr,
+    prior_knowledge: bool,
 }
 
 impl<'a, I, C> ConnectionConfig<'a, I, C>
@@ -185,6 +195,11 @@ where
     pub fn client_bind_addr(&self) -> &IpAddr {
         &self.client_bind_addr
     }
+
+    /// Get whether to consider prior knowdlege of protocol support.
+    pub fn prior_knowledge(&self) -> bool {
+        self.prior_knowledge
+    }
 }
 
 /// Trait that represents an HTTP connection.
@@ -206,14 +221,6 @@ pub trait HttpConnectionPool {
     type ConnectionDispather: HttpConnectionDispatcher;
     /// The connection cache type.
     type ConnectionCache;
-
-    /// Allow create a new connection pool.
-    ///
-    /// # Returns
-    ///
-    /// * `HttpConnectionPool` - The new connection pool.
-    ///
-    fn new(max_idle_connections: u32, keep_alive_duration: Duration) -> Self;
 
     /// Allow get connections.
     ///
