@@ -622,9 +622,9 @@ dependencies = [
 
 [[package]]
 name = "deboa"
-version = "0.1.5-beta.1"
+version = "0.1.5-beta.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1e3ea2d0968fb1ada5f11bbe9b83e480db8ec44324662143e986dfa773917a1c"
+checksum = "bd59fe2fa37660e6ba3d0cda40e9a182e992db6081e1f62a82e69465170afdc9"
 dependencies = [
  "async-lock",
  "base64",
@@ -652,12 +652,12 @@ dependencies = [
 
 [[package]]
 name = "deboa-extras"
-version = "0.1.1-beta.1"
+version = "0.1.1-beta.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1b7d25e115de27e594af18680b22fa5f2e79db058971c2d3b37ea210c9782ac0"
+checksum = "e293ff50da3257649d4f7d4f47addb0eb48ac6581ee17ce413ce2ea66e9a08fd"
 dependencies = [
  "bytes",
- "deboa 0.1.5-beta.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "deboa 0.1.5-beta.2",
  "futures",
  "http",
  "http-body-util",
@@ -1057,9 +1057,9 @@ checksum = "6dbf3de79e51f3d586ab4cb9d5c3e2c14aa28ed23d180cf89b4df0454a69cc87"
 
 [[package]]
 name = "hyper"
-version = "1.11.0"
+version = "1.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d22053281f852e11534f5198498373cbb59295120a20771d90f7ed1897490a72"
+checksum = "27b501faa50e7a26c3d3560ca625132f4078a17771f4810baf70475ae48cbe43"
 dependencies = [
  "atomic-waker",
  "bytes",
@@ -1078,9 +1078,9 @@ dependencies = [
 
 [[package]]
 name = "hyper-body-utils"
-version = "0.1.16"
+version = "0.1.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "56483f9b44efa33654cf0b443557e231c85632197ada81442e9fe951b468a8e9"
+checksum = "fab1195b54efa6a8d94646140da65327016084297e2d2111c839d339997273b4"
 dependencies = [
  "async-fn-stream",
  "bytes",
@@ -1215,9 +1215,9 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.14.0"
+version = "2.14.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d466e9454f08e4a911e14806c24e16fba1b4c121d1ea474396f396069cf949d9"
+checksum = "cc4e190f5d26ca7051642629da2c52fc03bde85a03197c99408dcd291734c855"
 dependencies = [
  "equivalent",
  "hashbrown 0.17.1",
