@@ -1,6 +1,6 @@
 name: "Bug Report"
 description: "Create a new ticket for a bug."
-title: "[Tokio|Smol|Compio] [BUG] - <title>"
+title: "[BUG] - <title>"
 labels: [
   "bug"
 ]
