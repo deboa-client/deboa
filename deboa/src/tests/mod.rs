@@ -4,7 +4,6 @@ use ::url::Url;
 use http::Uri;
 
 mod cache;
-//mod catcher;
 mod cookie;
 mod form;
 mod request;
