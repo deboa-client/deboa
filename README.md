@@ -1,6 +1,6 @@
 # Deboa
 
-[![crates.io](https://img.shields.io/crates/v/deboa?style=flat-square)](https://crates.io/crates/deboa) [![Build Status](https://github.com/ararog/deboa/actions/workflows/rust.yml/badge.svg?event=push)](https://github.com/ararog/deboa/actions/workflows/rust.yml) [![codecov](https://codecov.io/gh/ararog/deboa/graph/badge.svg?token=T0HSBAPVSI)](https://codecov.io/gh/ararog/deboa) [![Documentation](https://docs.rs/deboa/badge.svg)](https://docs.rs/deboa/latest/deboa)
+[![crates.io](https://img.shields.io/crates/v/deboa?style=flat-square)](https://crates.io/crates/deboa) [![Build Status](https://github.com/deboa-client/deboa/actions/workflows/rust.yml/badge.svg?event=push)](https://github.com/deboa-client/deboa/actions/workflows/rust.yml) [![codecov](https://codecov.io/gh/deboa-client/deboa/graph/badge.svg?token=T0HSBAPVSI)](https://codecov.io/gh/deboa-client/deboa) [![Documentation](https://docs.rs/deboa/badge.svg)](https://docs.rs/deboa/latest/deboa)
 
 ## Description
 
@@ -10,7 +10,7 @@ Built using [hyper](https://github.com/hyperium/hyper).
 
 ## Attention
 
-This release has a major api change. Please check the [migration guide](https://github.com/ararog/deboa/blob/main/MIGRATION_GUIDE.md) for more information. Keep in mind API for prior to 0.1.0 is subject to change. Proper deprecation will be added in the next stable release.
+This release has a major api change. Please check the [migration guide](https://github.com/deboa-client/deboa/blob/main/MIGRATION_GUIDE.md) for more information. Keep in mind API for prior to 0.1.0 is subject to change. Proper deprecation will be added in the next stable release.
 
 ## Install
 
@@ -56,11 +56,11 @@ async fn main() -> Result<()> {
 
 ## Subprojects
 
-### [deboa](https://github.com/ararog/deboa/tree/develop/deboa)
+### [deboa](https://github.com/deboa-client/deboa/tree/develop/deboa)
 
 Top level project with runtime agnostic http client API.
 
-### [deboa-macros](https://github.com/ararog/deboa/tree/develop/deboa-macros)
+### [deboa-macros](https://github.com/deboa-client/deboa/tree/develop/deboa-macros)
 
 A crate with collection of convenience macros for deboa. It is close equivalent to
 apisauce for axios, where one macro does it all, from request to response.
@@ -68,27 +68,27 @@ It used to be the home of bora macro, which has been moved to vamo-macros crate.
 
 ### deboa-compio (moved)
 
-Deboa implementation for compio runtime to <https://github.com/ararog/deboa-compio>.
+Deboa implementation for compio runtime to <https://github.com/deboa-client/deboa-compio>.
 
 ### deboa-glommio (moved)
 
-Deboa implementation for glommio runtime to <https://github.com/ararog/deboa-glommio>.
+Deboa implementation for glommio runtime to <https://github.com/deboa-client/deboa-glommio>.
 
 ### deboa-smol (moved)
 
-Deboa implementation for smol runtime to <https://github.com/ararog/deboa/deboa-smol>.
+Deboa implementation for smol runtime to <https://github.com/deboa-client/deboa/deboa-smol>.
 
 ### deboa-tokio (moved)
 
-Deboa implmentation for tokio runtime to <https://github.com/ararog/deboa/deboa-tokio>.
+Deboa implmentation for tokio runtime to <https://github.com/deboa-client/deboa/deboa-tokio>.
 
 ### vamo (moved)
 
-Vamo has moved to <https://github.com/ararog/vamo>.
+Vamo has moved to <https://github.com/deboa-client/vamo>.
 
 ### vamo-macros (moved)
 
-Vamo-macros has moved to <https://github.com/ararog/vamo>.
+Vamo-macros has moved to <https://github.com/deboa-client/vamo>.
 
 ## License
 
