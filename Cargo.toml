@@ -21,14 +21,15 @@ async-executor = { version = "1.13.3", default-features = false }
 async-lock = "3.4.2"
 base64 = { version = "0.23.0" }
 bytes = { version = "1.11" }
-caramelo = "0.1.2"
+caramelo = "0.1.4"
 cookie = { version = "0.18.1" }
 deboa = { path = "deboa", version = "0.1.5-beta.1" }
-deboa-extras = { version = "0.1.1-beta.1" }
+#deboa-extras = { path = "../deboa-contrib/deboa-extras" }
+deboa-extras = "0.1.1-beta.2"
 hashbrown = "0.17.1"
 http = "1"
-hyper = { version = "1.8.1", features = ["client"], default-features = false }
-hyper-body-utils = { version = ">= 0.1.14", default-features = false }
+hyper = { version = "1.11.1", features = ["client"], default-features = false }
+hyper-body-utils = { version = "0.1.17", default-features = false }
 hyper-util = { version = "0.1.20", features = [
   "client",
   "client-legacy",
