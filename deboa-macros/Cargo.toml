@@ -31,3 +31,6 @@ proc-macro2 = "1.0.107"
 quote = "1.0.47"
 serde =  { workspace = true }
 syn = "3.0.5"
+
+[dev-dependencies]
+trybuild = "1.0.119"
