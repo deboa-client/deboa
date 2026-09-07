@@ -35,7 +35,7 @@ hyper-util = { version = "0.1.20", features = [
   "client-legacy",
 ], default-features = false }
 multer = "3.1.0"
-rstest = "0.26.1"
+rstest = "0.27.0"
 serde = { version = "1.0.217", features = ["derive"] }
 tackle = { version = "0.1.1" }
 
