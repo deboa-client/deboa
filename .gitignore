@@ -3,3 +3,4 @@ deboa/target/
 .vscode
 .DS_Store
 .samoyed
+**/lcov.info
