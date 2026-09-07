@@ -1,4 +1,5 @@
 #[test]
+#[cfg(not(tarpaulin))]
 fn ui() {
     let t = trybuild::TestCases::new();
     t.pass("tests/ui/resource-pass-1.rs");

@@ -33,4 +33,4 @@ serde =  { workspace = true }
 syn = "3.0.5"
 
 [dev-dependencies]
-trybuild = "1.0.119"
+trybuild = "1.0.120"
