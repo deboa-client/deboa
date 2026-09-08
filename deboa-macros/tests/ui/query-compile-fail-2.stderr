@@ -1,0 +1,9 @@
+error: Missing required field: 'url'
+  --> tests/ui/query-compile-fail-2.rs:8:5
+   |
+ 8 | /     query!(
+ 9 | |         client => &client,
+10 | |     );
+   | |_____^
+   |
+   = note: this error originates in the macro `query` (in Nightly builds, run with -Z macro-backtrace for more info)

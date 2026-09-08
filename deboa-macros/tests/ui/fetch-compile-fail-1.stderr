@@ -1,0 +1,9 @@
+error: Missing required field: 'client'
+  --> tests/ui/fetch-compile-fail-1.rs:8:5
+   |
+ 8 | /     fetch!(
+ 9 | |         url => "https://jsonplaceholder.typicode.com/posts",
+10 | |     );
+   | |_____^
+   |
+   = note: this error originates in the macro `fetch` (in Nightly builds, run with -Z macro-backtrace for more info)

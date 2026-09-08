@@ -2,9 +2,31 @@
 #[cfg(not(tarpaulin))]
 fn ui() {
     let t = trybuild::TestCases::new();
-    t.pass("tests/ui/resource-pass-1.rs");
-    t.compile_fail("tests/ui/resource-compile-fail-1.rs");
-    t.compile_fail("tests/ui/resource-compile-fail-2.rs");
-    t.compile_fail("tests/ui/resource-compile-fail-3.rs");
-    t.compile_fail("tests/ui/resource-compile-fail-4.rs");
+    t.pass("tests/ui/get-pass-1.rs");
+    t.compile_fail("tests/ui/get-compile-fail-1.rs");
+    t.compile_fail("tests/ui/get-compile-fail-2.rs");
+    t.pass("tests/ui/query-pass-1.rs");
+    t.compile_fail("tests/ui/query-compile-fail-1.rs");
+    t.compile_fail("tests/ui/query-compile-fail-2.rs");
+    t.pass("tests/ui/post-pass-1.rs");
+    t.compile_fail("tests/ui/post-compile-fail-1.rs");
+    t.compile_fail("tests/ui/post-compile-fail-2.rs");
+    t.pass("tests/ui/patch-pass-1.rs");
+    t.compile_fail("tests/ui/patch-compile-fail-1.rs");
+    t.compile_fail("tests/ui/patch-compile-fail-2.rs");
+    t.pass("tests/ui/put-pass-1.rs");
+    t.compile_fail("tests/ui/put-compile-fail-1.rs");
+    t.compile_fail("tests/ui/put-compile-fail-2.rs");
+    t.pass("tests/ui/delete-pass-1.rs");
+    t.compile_fail("tests/ui/delete-compile-fail-1.rs");
+    t.compile_fail("tests/ui/delete-compile-fail-2.rs");
+    t.pass("tests/ui/fetch-pass-1.rs");
+    t.compile_fail("tests/ui/fetch-compile-fail-1.rs");
+    t.compile_fail("tests/ui/fetch-compile-fail-2.rs");
+    t.pass("tests/ui/submit-pass-1.rs");
+    t.compile_fail("tests/ui/submit-compile-fail-1.rs");
+    t.compile_fail("tests/ui/submit-compile-fail-2.rs");
+    t.pass("tests/ui/stream-pass-1.rs");
+    t.compile_fail("tests/ui/stream-compile-fail-1.rs");
+    t.compile_fail("tests/ui/stream-compile-fail-2.rs");
 }

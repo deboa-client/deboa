@@ -1,0 +1,10 @@
+error: Missing required field: 'client'
+  --> tests/ui/submit-compile-fail-1.rs:8:5
+   |
+ 8 | /     submit!(
+ 9 | |         url => "https://jsonplaceholder.typicode.com/posts",
+10 | |         method => http::Method::GET,
+11 | |     );
+   | |_____^
+   |
+   = note: this error originates in the macro `submit` (in Nightly builds, run with -Z macro-backtrace for more info)

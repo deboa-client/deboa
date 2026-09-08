@@ -33,4 +33,6 @@ serde =  { workspace = true }
 syn = "3.0.5"
 
 [dev-dependencies]
+deboa-tokio = "0.1.4-beta.3"
+tokio.workspace = true
 trybuild = "1.0.120"

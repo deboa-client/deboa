@@ -1,0 +1,9 @@
+error: Missing required field: 'url'
+  --> tests/ui/put-compile-fail-2.rs:8:5
+   |
+ 8 | /     put!(
+ 9 | |         client => &client,
+10 | |     );
+   | |_____^
+   |
+   = note: this error originates in the macro `put` (in Nightly builds, run with -Z macro-backtrace for more info)
