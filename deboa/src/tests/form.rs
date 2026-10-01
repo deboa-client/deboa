@@ -1,12 +1,16 @@
 use crate::{
-    form::{DeboaForm, EncodedForm, MultiPartForm},
-    Result, TestResult,
+    form::{EncodedForm, MultiPartForm},
+    TestResult,
 };
-use std::{io::Write, path::Path};
+use bytes::BytesMut;
+use futures::StreamExt;
+use std::{fmt::Write as _, io::Write};
 use tempfile::NamedTempFile;
+use tokio::fs::File;
+use tokio_util::io::ReaderStream;
 
 #[test]
-fn test_encoded_form() -> Result<()> {
+fn test_encoded_form() -> TestResult<()> {
     let form = EncodedForm::builder()
         .field("name", "deboa")
         .field("version", "0.0.1");
@@ -18,23 +22,37 @@ fn test_encoded_form() -> Result<()> {
     Ok(())
 }
 
-#[test]
-fn test_multipart_form() -> Result<()> {
+#[tokio::test]
+async fn test_multipart_form() -> TestResult<()> {
     let builder = MultiPartForm::builder()
         .field("name", "deboa")
         .field("version", "0.0.1");
 
     let boundary = builder.boundary();
 
-    let form = builder.build();
+    let mut data = BytesMut::new();
+    write!(&mut data, "--{}\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\ndeboa\r\n--{}\r\nContent-Disposition: form-data; name=\"version\"\r\n\r\n0.0.1\r\n--{}--\r\n", boundary, boundary, boundary)?;
 
-    assert_eq!(form.to_vec(), format!("--{}\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\ndeboa\r\n--{}\r\nContent-Disposition: form-data; name=\"version\"\r\n\r\n0.0.1\r\n--{}--\r\n", boundary, boundary, boundary).as_bytes());
+    let form = builder
+        .build()
+        .await
+        .fold(Vec::new(), |mut acc, chunk| async move {
+            acc.extend_from_slice(
+                chunk
+                    .unwrap()
+                    .data_ref()
+                    .unwrap(),
+            );
+            acc
+        })
+        .await;
+    assert_eq!(&form, &data);
 
     Ok(())
 }
 
 #[test]
-fn test_encoded_form_content_type() -> Result<()> {
+fn test_encoded_form_content_type() -> TestResult<()> {
     let form = EncodedForm::builder()
         .field("name", "deboa")
         .field("version", "0.0.1");
@@ -45,7 +63,7 @@ fn test_encoded_form_content_type() -> Result<()> {
 }
 
 #[test]
-fn test_multipart_form_content_type() -> Result<()> {
+fn test_multipart_form_content_type() -> TestResult<()> {
     let form = MultiPartForm::builder()
         .field("name", "deboa")
         .field("version", "0.0.1");
@@ -58,28 +76,37 @@ fn test_multipart_form_content_type() -> Result<()> {
     Ok(())
 }
 
-#[test]
-fn test_multipart_form_with_file() -> TestResult<()> {
+#[tokio::test]
+async fn test_multipart_form_with_file() -> TestResult<()> {
     let mut builder = MultiPartForm::builder();
 
     let mut tmpfile = NamedTempFile::new()?;
     write!(tmpfile, "Hello World!")?;
-    tmpfile.persist("/tmp/test.txt")?;
 
-    let path = Path::new("/tmp/test.txt");
+    let file_stream = ReaderStream::new(File::open(tmpfile.path()).await?);
     builder = builder
         .field("name", "deboa")
         .field("version", "0.0.1")
-        .file("file", &path);
+        .stream("file", "test.txt", "text/plain", file_stream);
 
     let boundary = builder.boundary();
-    let form = builder.build();
+    let mut bytes = BytesMut::new();
+    write!(&mut bytes, "--{}\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\ndeboa\r\n--{}\r\nContent-Disposition: form-data; name=\"version\"\r\n\r\n0.0.1\r\n--{}\r\nContent-Disposition: form-data; name=\"file\"; filename=\"test.txt\"\r\nContent-Type: text/plain\r\n\r\nHello World!\r\n--{}--\r\n", boundary, boundary, boundary, boundary)?;
 
-    let mut chunk = format!("--{}\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\ndeboa\r\n--{}\r\nContent-Disposition: form-data; name=\"version\"\r\n\r\n0.0.1\r\n--{}\r\nContent-Disposition: form-data; name=\"file\"; filename=\"test.txt\"\r\nContent-Type: text/plain\r\n\r\n", boundary, boundary, boundary).as_bytes().to_vec();
-    chunk.extend_from_slice(b"Hello World!");
-    chunk.extend_from_slice(format!("\r\n--{}--\r\n", boundary).as_bytes());
-
-    assert_eq!(form.to_vec(), chunk);
+    let form = builder
+        .build()
+        .await
+        .fold(Vec::new(), |mut acc, chunk| async move {
+            acc.extend_from_slice(
+                chunk
+                    .unwrap()
+                    .data_ref()
+                    .unwrap(),
+            );
+            acc
+        })
+        .await;
+    assert_eq!(&form, &bytes);
 
     Ok(())
 }
