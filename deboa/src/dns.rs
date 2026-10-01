@@ -1,8 +1,60 @@
 //! DNS module for resolving hostnames to IP addresses.
 //!
 //! This module provides functionality for resolving hostnames to IP addresses.
+use http::Version;
+
 use crate::Result;
 use std::{future::Future, net::IpAddr};
+
+#[derive(Default, Debug)]
+/// DnsResponse builder
+pub struct Builder {
+    pub(crate) protos: Vec<Version>,
+    pub(crate) addrs: Vec<IpAddr>,
+}
+
+impl Builder {
+    /// Add a list of supported protocols by these servers
+    pub fn protos(mut self, protos: Vec<Version>) -> Self {
+        self.protos = protos;
+        self
+    }
+
+    /// Add ip addresses returned
+    pub fn addresses(mut self, addrs: Vec<IpAddr>) -> Self {
+        self.addrs = addrs;
+        self
+    }
+
+    /// Build a DnsResponse
+    pub fn build(self) -> DnsResponse {
+        DnsResponse { protos: self.protos, addrs: self.addrs }
+    }
+}
+
+#[derive(Default, Debug, Clone)]
+/// DNS response type
+pub struct DnsResponse {
+    pub(crate) protos: Vec<Version>,
+    pub(crate) addrs: Vec<IpAddr>,
+}
+
+impl DnsResponse {
+    /// Create a DnsResponseBuilder
+    pub fn builder() -> Builder {
+        Builder::default()
+    }
+
+    /// Add a list of supported protocols by these servers
+    pub fn protos(&self) -> &Vec<Version> {
+        &self.protos
+    }
+
+    /// Add ip addresses returned
+    pub fn addresses(&self) -> &Vec<IpAddr> {
+        &self.addrs
+    }
+}
 
 /// DNS resolver trait for resolving hostnames to IP addresses.
 ///
@@ -21,5 +73,5 @@ use std::{future::Future, net::IpAddr};
 /// [`crate::conn`] already use.
 pub trait DnsResolver: Send + 'static {
     /// Resolves a hostname to a list of IP addresses.
-    fn resolve(&self, host: String, port: u16) -> impl Future<Output = Result<Vec<IpAddr>>>;
+    fn resolve(&self, host: String, port: u16) -> impl Future<Output = Result<DnsResponse>>;
 }

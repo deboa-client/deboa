@@ -71,7 +71,6 @@ use crate::{
     cookie::DeboaCookie,
     dns::DnsResolver,
     errors::{DeboaError, RequestError},
-    form::{DeboaForm, Form},
     response::DeboaResponse,
     serde::RequestBody,
     url::IntoUrl,
@@ -758,52 +757,6 @@ impl DeboaRequestBuilder {
                         .map_err(|e| DeboaError::Cookie { message: e.to_string() })?,
                 );
         }
-        Ok(self)
-    }
-
-    /// Set multipart form of the request.
-    /// Content-Type will be set to `multipart/form-data` or `application/x-www-form-urlencoded`
-    /// based on the enum variant.
-    ///
-    /// # Arguments
-    ///
-    /// * `form` - The form.
-    ///
-    /// # Returns
-    ///
-    /// * `Self` - The request builder.
-    ///
-    /// # Examples
-    ///
-    /// ```rust,compile_fail
-    /// use deboa::request::post;
-    /// use deboa::form::MultiPartForm;
-    ///
-    /// let mut form = MultiPartForm::builder();
-    ///     .field("name", "deboa");
-    ///     .field("version", "0.0.1");
-    ///
-    /// let request = post("https://jsonplaceholder.typicode.com/posts")?
-    ///   .form(form.into())
-    ///   .build()?;
-    /// let response = request.send_with(&mut client).await?;
-    /// assert_eq!(response.status(), 201);
-    /// ```
-    #[inline]
-    pub fn form(mut self, form: Form) -> Result<Self> {
-        let (content_type, body) = match form {
-            Form::EncodedForm(form) => (form.content_type(), form.build()),
-            Form::MultiPartForm(form) => (form.content_type(), form.build()),
-        };
-        let header_value = HeaderValue::from_str(&content_type)
-            .map_err(|e| DeboaError::Header { message: e.to_string() })?;
-        self.inner
-            .headers_mut()
-            .insert(header::CONTENT_TYPE, header_value);
-
-        *self
-            .inner
-            .body_mut() = HttpBody::from_bytes(&body);
         Ok(self)
     }
 

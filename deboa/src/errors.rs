@@ -62,6 +62,13 @@ pub enum DeboaError {
         message: String,
     },
 
+    /// Invalid cookie header error
+    #[error("Could not encode form: {message}")]
+    Form {
+        /// Error message
+        message: String,
+    },
+
     /// Invalid client certificate error (deprecated, use Identity instead)
     #[deprecated = "Use `Identity` instead"]
     #[error("Invalid client certificate: {message}")]

@@ -4,13 +4,14 @@
 use crate::{
     cert::{Certificate, Identity},
     dns::DnsResolver,
+    proto::ProtocolSettings,
     response::DeboaResponse,
     Result,
 };
 use http::{Request, Version};
 use hyper_body_utils::HttpBody;
-use std::time::Duration;
 use std::{future::Future, net::IpAddr};
+use std::{net::SocketAddr, time::Duration};
 
 /// Builder for connection configuration.
 pub struct ConnectionConfigBuilder<'a, I, C> {
@@ -24,6 +25,7 @@ pub struct ConnectionConfigBuilder<'a, I, C> {
     skip_cert_verification: bool,
     client_bind_addr: IpAddr,
     prior_knowledge: bool,
+    protocol_settings: ProtocolSettings,
 }
 
 impl<'a, I, C> ConnectionConfigBuilder<'a, I, C>
@@ -39,6 +41,7 @@ where
             host: "",
             port: 80,
             protocol_version: Version::HTTP_2,
+            protocol_settings: ProtocolSettings::default(),
             connection_timeout: Duration::from_secs(30),
             identity: None,
             certificate: None,
@@ -110,6 +113,12 @@ where
         self
     }
 
+    /// Set the protocol settings the connection.
+    pub fn protocol_settings(mut self, protocol_settings: ProtocolSettings) -> Self {
+        self.protocol_settings = protocol_settings;
+        self
+    }
+
     /// Build the connection configuration.
     pub fn build(self) -> ConnectionConfig<'a, I, C> {
         ConnectionConfig {
@@ -123,6 +132,7 @@ where
             skip_cert_verification: self.skip_cert_verification,
             client_bind_addr: self.client_bind_addr,
             prior_knowledge: self.prior_knowledge,
+            protocol_settings: self.protocol_settings,
         }
     }
 }
@@ -139,6 +149,7 @@ pub struct ConnectionConfig<'a, I, C> {
     skip_cert_verification: bool,
     client_bind_addr: IpAddr,
     prior_knowledge: bool,
+    protocol_settings: ProtocolSettings,
 }
 
 impl<'a, I, C> ConnectionConfig<'a, I, C>
@@ -200,8 +211,12 @@ where
     pub fn prior_knowledge(&self) -> bool {
         self.prior_knowledge
     }
-}
 
+    /// Get the protocol settings for the connection.
+    pub fn protocol_settings(&self) -> &ProtocolSettings {
+        &self.protocol_settings
+    }
+}
 /// Trait that represents an HTTP connection.
 pub trait HttpConnection {
     /// The sender to use.
@@ -251,11 +266,31 @@ pub trait HttpConnectionPool {
     ///
     fn create_connection<D>(
         &mut self,
-        config: &ConnectionConfig<Self::Identity, Self::Certificate>,
+        config: &mut ConnectionConfig<Self::Identity, Self::Certificate>,
         dns_resolver: &D,
     ) -> impl Future<Output = Result<&mut Self::ConnectionDispather>>
     where
         D: DnsResolver;
+}
+
+/// Trait for plain connection factory
+pub trait PlainConnectionFactory {
+    /// Output connection type
+    type Connection;
+    /// Connect with TcpStream
+    fn connect(&mut self, addr: SocketAddr) -> impl Future<Output = Result<Self::Connection>>;
+}
+
+/// Trait for secure connection factory
+pub trait SecureConnectionFactory<'a, I, C> {
+    /// Output connection type
+    type Connection;
+    /// Connect with TcpStream
+    fn connect(
+        &mut self,
+        addr: SocketAddr,
+        config: ConnectionConfig<'a, I, C>,
+    ) -> impl Future<Output = Result<Self::Connection>>;
 }
 
 /// Trait that represents the HTTP connection dispatcher.

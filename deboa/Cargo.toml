@@ -19,6 +19,7 @@ all-features = true
 default = []
 
 [dependencies]
+async-fn-stream = "0.3.2"
 async-lock.workspace = true
 base64.workspace = true
 bytes.workspace = true
@@ -34,9 +35,7 @@ hyper-util = { workspace = true, features = [
   "client",
   "client-legacy",
 ], default-features = false }
-indexmap = "2.14.1"
 log = "0.4.33"
-minimime = "1.0.0"
 rand = { version = "0.10.1", default-features = false, features = ["std", "thread_rng"] }
 regex = { version = "1.12.4", default-features = false }
 serde = { workspace = true, default-features = false, features = ["derive"] }
@@ -57,3 +56,5 @@ mime = { version = "0.3.17" }
 multer.workspace = true
 tempfile = "3.27.0"
 time = { version = "0.3.53" }
+tokio-util = "0.7.19"
+tokio.workspace = true

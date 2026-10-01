@@ -1,5 +1,5 @@
 use crate::{
-    form::{DeboaForm, EncodedForm},
+    form::EncodedForm,
     request::{delete, get, patch, post, put, query, DeboaRequest, IntoRequest, MethodExt},
     tests::{test_uri, test_url, TEST_URL},
     TestResult,
@@ -461,7 +461,7 @@ fn test_request_form() -> TestResult<()> {
         .field("version", "0.0.1");
     let url = test_url();
     let api = post(url.clone())?
-        .form(form.into())?
+        .body(form.into())
         .build()?;
     let body = api
         .body()

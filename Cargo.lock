@@ -697,6 +697,7 @@ checksum = "460fbee9c2c2f33933d720630a6a0bac33ba7053db5344fac858d4b8952d77d5"
 name = "deboa"
 version = "0.1.5-beta.2"
 dependencies = [
+ "async-fn-stream",
  "async-lock",
  "base64",
  "bytes",
@@ -711,10 +712,8 @@ dependencies = [
  "hyper",
  "hyper-body-utils",
  "hyper-util",
- "indexmap",
  "log",
  "mime",
- "minimime",
  "multer",
  "rand",
  "regex",
@@ -723,6 +722,8 @@ dependencies = [
  "tempfile",
  "thiserror 2.0.20",
  "time",
+ "tokio",
+ "tokio-util",
  "url",
  "urlencoding",
 ]

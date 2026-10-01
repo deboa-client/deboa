@@ -14,7 +14,7 @@ use log::info;
 use std::{
     future::Future,
     net::{IpAddr, Ipv4Addr},
-    ops::{Deref, Shl},
+    ops::Shl,
     time::Duration,
 };
 use tackle::{Chain, Hook, HookFn};
@@ -26,59 +26,13 @@ pub mod cookie;
 pub mod dns;
 pub mod errors;
 pub mod form;
+pub mod proto;
 pub mod request;
 pub mod response;
 pub mod serde;
 #[cfg(test)]
 pub mod tests;
 pub mod url;
-
-/// Type for ALPN protocol
-pub struct Alpn<'a>(&'a str);
-
-impl<'a> Alpn<'a> {
-    /// Create a new alpn from code as string
-    pub fn new(code: &'a str) -> Self {
-        Alpn(code)
-    }
-}
-
-impl<'a> Deref for Alpn<'a> {
-    type Target = &'a str;
-
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-
-impl<'a> From<Alpn<'a>> for &'a [u8] {
-    fn from(value: Alpn<'a>) -> Self {
-        *&value.as_bytes()
-    }
-}
-
-impl<'a> From<Alpn<'a>> for Version {
-    fn from(value: Alpn<'a>) -> Self {
-        let alpn = *value;
-        match alpn {
-            "http/1.1" => Version::HTTP_11,
-            "h2" => Version::HTTP_2,
-            "h3" => Version::HTTP_3,
-            _ => panic!("Invalid ALPN"),
-        }
-    }
-}
-
-impl<'a> From<Version> for Alpn<'a> {
-    fn from(value: Version) -> Self {
-        match value {
-            Version::HTTP_11 => Alpn("http/1.1"),
-            Version::HTTP_2 => Alpn("h2"),
-            Version::HTTP_3 => Alpn("h3"),
-            _ => Alpn("none"),
-        }
-    }
-}
 
 /// Type alias for Result<T, DeboaError>
 /// Convenience alias for handling Deboa errors throughout the library.
@@ -708,7 +662,7 @@ where
                 }
             });
 
-        let config = ConnectionConfig::builder()
+        let mut config = ConnectionConfig::builder()
             .scheme(scheme)
             .host(host)
             .port(port)
@@ -731,7 +685,7 @@ where
             .await;
 
         let conn = pool
-            .create_connection(&config, &self.dns_resolver)
+            .create_connection(&mut config, &self.dns_resolver)
             .await?;
 
         let request = request.body();
