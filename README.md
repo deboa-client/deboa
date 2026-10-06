@@ -54,7 +54,7 @@ async fn main() -> Result<()> {
 }
 ```
 
-## Subprojects
+## Subcrates
 
 ### [deboa](https://github.com/deboa-client/deboa/tree/develop/deboa)
 
@@ -70,6 +70,22 @@ It used to be the home of bora macro, which has been moved to vamo-macros crate.
 
 Deboa implementation for compio runtime to <https://github.com/deboa-client/deboa-compio>.
 
+### deboa-extras
+
+- SSE, rate limiting and several serialization and deserialization formats support.
+
+### deboa-fory
+
+- Apache Fory serialization and deserialization support.
+
+### deboa-h3
+
+- HTTP3 utilities for deboa
+
+### deboa-hickory
+
+Deboa extension crate providing DNS resolution via hickory-resolver.
+
 ### deboa-glommio (moved)
 
 Deboa implementation for glommio runtime to <https://github.com/deboa-client/deboa-glommio>.
@@ -81,6 +97,10 @@ Deboa implementation for smol runtime to <https://github.com/deboa-client/deboa/
 ### deboa-tokio (moved)
 
 Deboa implmentation for tokio runtime to <https://github.com/deboa-client/deboa/deboa-tokio>.
+
+### deboa-ws
+
+Websockets support to deboa-tokio and deboa-smol
 
 ### vamo (moved)
 
