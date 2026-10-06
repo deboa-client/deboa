@@ -614,7 +614,7 @@ impl DeboaRequestBuilder {
     pub fn bytes(mut self, body: &[u8]) -> Self {
         *self
             .inner
-            .body_mut() = HttpBody::from_bytes(body);
+            .body_mut() = HttpBody::bytes(body);
         self
     }
 
@@ -786,7 +786,7 @@ impl DeboaRequestBuilder {
     pub fn text(mut self, text: &str) -> Self {
         *self
             .inner
-            .body_mut() = HttpBody::from_bytes(text.as_bytes());
+            .body_mut() = HttpBody::bytes(text.as_bytes());
         self
     }
 
@@ -822,7 +822,7 @@ impl DeboaRequestBuilder {
         Ok(self
             .header(header::CONTENT_TYPE, body_type.mime_type())?
             .header(header::ACCEPT, body_type.mime_type())?
-            .body(HttpBody::from_bytes(&body_type.serialize(body)?)))
+            .body(HttpBody::bytes(&body_type.serialize(body)?)))
     }
 
     /// Add bearer auth to the request.
@@ -1134,7 +1134,7 @@ impl FromStr for DeboaRequest {
             .unwrap() = headers;
 
         let request = builder
-            .body(HttpBody::from_bytes(&body))
+            .body(HttpBody::bytes(&body))
             .map_err(|e| {
                 error!("Failed to build request: {}", e);
                 DeboaError::Request(RequestError::Parse {
@@ -1201,7 +1201,7 @@ impl DeboaRequest {
             .version(Version::HTTP_2)
             .header(header::HOST, uri.host().unwrap())
             .uri(uri)
-            .body(HttpBody::from_bytes(&[]))
+            .body(HttpBody::bytes(&[]))
             .map_err(|e| DeboaError::Request(RequestError::Prepare { message: e.to_string() }))?;
 
         Ok(DeboaRequestBuilder { inner: request })

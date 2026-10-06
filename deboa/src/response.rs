@@ -117,14 +117,14 @@ pub trait IntoBody {
 impl IntoBody for &[u8] {
     #[inline]
     fn into_body(self) -> HttpBody {
-        HttpBody::from_bytes(self)
+        HttpBody::bytes(self)
     }
 }
 
 impl IntoBody for Vec<u8> {
     #[inline]
     fn into_body(self) -> HttpBody {
-        HttpBody::from_bytes(&self)
+        HttpBody::bytes(&self)
     }
 }
 
@@ -353,7 +353,7 @@ impl DeboaResponse {
     /// Create a new DeboaResponseBuilder
     #[inline]
     pub fn builder() -> DeboaResponseBuilder {
-        DeboaResponseBuilder { inner: Response::new(HttpBody::from_bytes(&[])) }
+        DeboaResponseBuilder { inner: Response::new(HttpBody::empty()) }
     }
 
     /// Allow get version at any time.

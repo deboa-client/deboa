@@ -388,7 +388,7 @@ impl MultiPartForm {
     /// # Notes
     ///
     /// As opposite to EncodedForm, multipart doesn't have a quick way to convert to a HttṕBody
-    /// you need [http-body-utils::HttpBody::from_generic_stream()] or [http-body-utils::HttpBody::from_compio_stream ]
+    /// you need call [http-body-utils::HttpBody::stream()]
     pub async fn build(mut self) -> impl futures::Stream<Item = Result<Frame<Bytes>, Error>> {
         let boundary = self.boundary;
         async_fn_stream::fn_stream(|emitter| async move {
