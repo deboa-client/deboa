@@ -95,13 +95,13 @@ pub trait Identity {
     /// # Returns
     ///
     /// * `&Option<Vec<u8>>` - The private key
-    fn key(&self) -> &Option<Vec<u8>>;
+    fn key(&self) -> Option<&Vec<u8>>;
     /// Get the encoding
     ///
     /// # Returns
     ///
     /// * `&Option<ContentEncoding>` - The encoding
-    fn encoding(&self) -> &Option<ContentEncoding>;
+    fn encoding(&self) -> Option<&ContentEncoding>;
 }
 
 /// Certificate

@@ -69,7 +69,7 @@ pub fn get(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'url'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
     let client = match args.client {
@@ -77,7 +77,7 @@ pub fn get(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'client'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
 
@@ -93,7 +93,7 @@ pub fn get(item: TokenStream) -> TokenStream {
         (Some(_), None) => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'res_ty'")
                 .to_compile_error()
-                .into()
+                .into();
         }
         _ => TS2::new(),
     };
@@ -223,7 +223,7 @@ pub fn query(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'url'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
     let client = match args.client {
@@ -231,7 +231,7 @@ pub fn query(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'client'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
 
@@ -245,7 +245,7 @@ pub fn query(item: TokenStream) -> TokenStream {
         (Some(_), None) => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'data'")
                 .to_compile_error()
-                .into()
+                .into();
         }
         _ => TS2::new(),
     };
@@ -257,7 +257,7 @@ pub fn query(item: TokenStream) -> TokenStream {
         (Some(_), None) => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'res_ty'")
                 .to_compile_error()
-                .into()
+                .into();
         }
         _ => TS2::new(),
     };
@@ -392,7 +392,7 @@ pub fn post(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'url'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
     let client = match args.client {
@@ -400,7 +400,7 @@ pub fn post(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'client'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
 
@@ -414,7 +414,7 @@ pub fn post(item: TokenStream) -> TokenStream {
         (Some(_), None) => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'data'")
                 .to_compile_error()
-                .into()
+                .into();
         }
         _ => TS2::new(),
     };
@@ -426,7 +426,7 @@ pub fn post(item: TokenStream) -> TokenStream {
         (Some(_), None) => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'res_ty'")
                 .to_compile_error()
-                .into()
+                .into();
         }
         _ => TS2::new(),
     };
@@ -506,7 +506,7 @@ pub fn put(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'url'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
     let client = match args.client {
@@ -514,7 +514,7 @@ pub fn put(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'client'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
 
@@ -528,7 +528,7 @@ pub fn put(item: TokenStream) -> TokenStream {
         (Some(_), None) => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'data'")
                 .to_compile_error()
-                .into()
+                .into();
         }
         _ => TS2::new(),
     };
@@ -540,7 +540,7 @@ pub fn put(item: TokenStream) -> TokenStream {
         (Some(_), None) => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'res_ty'")
                 .to_compile_error()
-                .into()
+                .into();
         }
         _ => TS2::new(),
     };
@@ -620,7 +620,7 @@ pub fn patch(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'url'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
     let client = match args.client {
@@ -628,7 +628,7 @@ pub fn patch(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'client'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
 
@@ -642,7 +642,7 @@ pub fn patch(item: TokenStream) -> TokenStream {
         (Some(_), None) => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'data'")
                 .to_compile_error()
-                .into()
+                .into();
         }
         _ => TS2::new(),
     };
@@ -654,7 +654,7 @@ pub fn patch(item: TokenStream) -> TokenStream {
         (Some(_), None) => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'res_ty'")
                 .to_compile_error()
-                .into()
+                .into();
         }
         _ => TS2::new(),
     };
@@ -718,7 +718,7 @@ pub fn delete(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'url'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
     let client = match args.client {
@@ -726,7 +726,7 @@ pub fn delete(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'client'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
 
@@ -808,7 +808,7 @@ pub fn fetch(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'url'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
     let client = match args.client {
@@ -816,7 +816,7 @@ pub fn fetch(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'client'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
 
@@ -832,7 +832,7 @@ pub fn fetch(item: TokenStream) -> TokenStream {
         (Some(_), None) => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'res_ty'")
                 .to_compile_error()
-                .into()
+                .into();
         }
         _ => TS2::new(),
     };
@@ -901,7 +901,7 @@ pub fn submit(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'url'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
     let client = match args.client {
@@ -909,7 +909,7 @@ pub fn submit(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'client'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
     let method = match args.method {
@@ -917,7 +917,7 @@ pub fn submit(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'method'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
 
@@ -986,7 +986,7 @@ pub fn stream(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'url'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
     let client = match args.client {
@@ -994,7 +994,7 @@ pub fn stream(item: TokenStream) -> TokenStream {
         None => {
             return syn::Error::new(Span::call_site(), "Missing required field: 'client'")
                 .to_compile_error()
-                .into()
+                .into();
         }
     };
 

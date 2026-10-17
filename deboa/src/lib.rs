@@ -563,8 +563,9 @@ impl<I, C, P, R> InnerClient<I, C, P, R> {
     ///
     /// * `Option<Identity>` - The certificate.
     ///
-    pub fn certificate(&self) -> &Option<C> {
-        &self.certificate
+    pub fn certificate(&self) -> Option<&C> {
+        self.certificate
+            .as_ref()
     }
 
     /// Allow get identity at any time.
@@ -574,8 +575,9 @@ impl<I, C, P, R> InnerClient<I, C, P, R> {
     /// * `Option<Identity>` - The identity.
     ///
     #[inline]
-    pub fn identity(&self) -> &Option<I> {
-        &self.identity
+    pub fn identity(&self) -> Option<&I> {
+        self.identity
+            .as_ref()
     }
 
     /// Allow get supported protocols

@@ -8,7 +8,7 @@ members = [
 ]
 
 [workspace.package]
-edition = "2021"
+edition = "2024"
 authors = ["Rogerio Araújo <rogerio.araujo@gmail.com>"]
 repository = "https://github.com/ararog/deboa"
 homepage = "https://github.com/ararog/deboa"
@@ -22,9 +22,9 @@ base64 = { version = "0.23.0" }
 bytes = { version = "1.11" }
 caramelo = "0.1.5"
 cookie = { version = "0.18.2" }
-deboa = { version = "0.1.5-beta.6" }
-deboa-extras = "0.1.1-beta.5"
-deboa-tokio = "0.1.4-beta.7"
+deboa = { version = "0.1.5-beta.7" }
+deboa-extras = { version = "0.1.1-beta.6" }
+deboa-tokio = { version = "0.1.4-beta.8" }
 hashbrown = "0.17.1"
 http = "1"
 hyper = { version = "1.11.1", features = ["client"], default-features = false }

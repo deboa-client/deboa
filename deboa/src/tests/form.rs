@@ -1,20 +1,6 @@
-#[cfg(feature = "multipart")]
-use crate::form::MultiPartForm;
 use crate::{TestResult, form::EncodedForm, request::DeboaRequest};
-#[cfg(feature = "multipart")]
-use bytes::BytesMut;
 use caramelo::{expect, matchers::eq};
-#[cfg(feature = "multipart")]
-use futures::StreamExt;
 use http::{Method, Uri};
-#[cfg(feature = "multipart")]
-use std::{fmt::Write as _, io::Write};
-#[cfg(feature = "multipart")]
-use tempfile::NamedTempFile;
-#[cfg(feature = "multipart")]
-use tokio::fs::File;
-#[cfg(feature = "multipart")]
-use tokio_util::io::ReaderStream;
 
 #[test]
 fn test_encoded_form() -> TestResult<()> {

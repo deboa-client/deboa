@@ -67,8 +67,6 @@
 
 #[cfg(feature = "cookie")]
 use crate::cookie::DeboaCookie;
-#[cfg(feature = "multipart")]
-use crate::form::MultiPartFormStream;
 use crate::{
     Client, HttpClient, InnerClient, Result,
     cert::{Certificate, Identity},
@@ -853,23 +851,6 @@ impl DeboaRequestBuilder {
         *self
             .inner
             .body_mut() = HttpBody::bytes(text.as_bytes());
-        self
-    }
-
-    #[cfg(feature = "multipart")]
-    /// Set multipart form as request body
-    ///
-    /// # Arguments
-    ///
-    /// * `form` - A multipart form type
-    ///
-    /// # Returns
-    ///
-    /// * `Result<Self>` - The request builder.
-    pub async fn multipart(mut self, form: impl MultiPartFormStream + 'static) -> Self {
-        *self
-            .inner
-            .body_mut() = HttpBody::stream(form);
         self
     }
 

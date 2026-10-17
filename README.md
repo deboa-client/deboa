@@ -10,7 +10,7 @@ Built using [hyper](https://github.com/hyperium/hyper).
 
 ## Attention
 
-This release has a major api change. Please check the [migration guide](https://github.com/deboa-client/deboa/blob/main/MIGRATION_GUIDE.md) for more information. Keep in mind API for prior to 0.1.0 is subject to change. Proper deprecation will be added in the next stable release.
+This release has a major api change. Please check the [migration guide](https://github.com/deboa-client/deboa/blob/main/MIGRATION_GUIDE.md) for more information. Keep in mind API is subject to change for next 2 or 3 stable releases.
 
 ## Install
 

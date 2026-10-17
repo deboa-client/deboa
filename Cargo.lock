@@ -176,6 +176,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "async-stream"
+version = "0.3.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0b5a71a6f37880a80d1d7f19efd781e4b5de42c88f0722cc13bcb6cc2cfe8476"
+dependencies = [
+ "async-stream-impl",
+ "futures-core",
+ "pin-project-lite",
+]
+
+[[package]]
+name = "async-stream-impl"
+version = "0.3.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c7c24de15d275a1ecfd47a380fb4d5ec9bfe0933f309ed5e705b775596a3574d"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.119",
+]
+
+[[package]]
 name = "async-task"
 version = "4.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -488,30 +510,25 @@ checksum = "460fbee9c2c2f33933d720630a6a0bac33ba7053db5344fac858d4b8952d77d5"
 
 [[package]]
 name = "deboa"
-version = "0.1.5-beta.6"
+version = "0.1.5-beta.7"
 dependencies = [
- "async-fn-stream",
  "async-lock",
  "base64",
  "bytes",
  "caramelo",
  "cookie",
  "criterion",
- "futures",
  "hashbrown 0.17.1",
  "http",
- "http-body",
  "http-body-util",
  "hyper",
  "hyper-body-utils",
  "log",
  "mime",
  "multer",
- "rand",
  "regex",
  "serde",
  "tackle",
- "tempfile",
  "thiserror 2.0.21",
  "time",
  "tokio",
@@ -522,23 +539,19 @@ dependencies = [
 
 [[package]]
 name = "deboa"
-version = "0.1.5-beta.6"
+version = "0.1.5-beta.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e9a79c8cea89d7621a7b34a6395335646e6d2ead87a3a4291e795da352835308"
+checksum = "bbd4900884b33396090a6f70406d81dd361fcfc15a840968172269f8aa9aa883"
 dependencies = [
- "async-fn-stream",
  "async-lock",
  "base64",
  "bytes",
- "futures",
  "hashbrown 0.17.1",
  "http",
- "http-body",
  "http-body-util",
  "hyper",
  "hyper-body-utils",
  "log",
- "rand",
  "regex",
  "serde",
  "tackle",
@@ -549,12 +562,12 @@ dependencies = [
 
 [[package]]
 name = "deboa-extras"
-version = "0.1.1-beta.5"
+version = "0.1.1-beta.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8edf13b55c8c67cbbd76fea332a4eca7641062f813f32963e2bb6f2761ab35d"
+checksum = "a107c8c5674d3011a61c983e9309ebea8e6df1e221a928410a1ae76dd15ec380"
 dependencies = [
  "bytes",
- "deboa 0.1.5-beta.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "deboa 0.1.5-beta.7 (registry+https://github.com/rust-lang/crates.io-index)",
  "futures",
  "http",
  "hyper",
@@ -573,9 +586,9 @@ dependencies = [
 
 [[package]]
 name = "deboa-macros"
-version = "0.1.0-beta.11"
+version = "0.1.0-beta.12"
 dependencies = [
- "deboa 0.1.5-beta.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "deboa 0.1.5-beta.7 (registry+https://github.com/rust-lang/crates.io-index)",
  "deboa-extras",
  "deboa-tokio",
  "http",
@@ -587,12 +600,29 @@ dependencies = [
 ]
 
 [[package]]
-name = "deboa-tls"
-version = "0.1.0-beta.4"
+name = "deboa-multipart"
+version = "0.1.0-beta.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7888362295e39f4965bcbb863e864d6b9e21501ae4851477bcc65df048a82910"
+checksum = "94bb25918cc515041a757e0a05acafaeef298d48ea6a84b634e4ab75b6f94c2e"
 dependencies = [
- "deboa 0.1.5-beta.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "async-lock",
+ "async-stream",
+ "base64",
+ "bytes",
+ "deboa 0.1.5-beta.7 (registry+https://github.com/rust-lang/crates.io-index)",
+ "futures",
+ "http-body",
+ "http-body-util",
+ "rand",
+]
+
+[[package]]
+name = "deboa-tls"
+version = "0.1.0-beta.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6f71cee433cac4b3f44ef063fdf8fd6f55fc179ff7d2ddf3bb1ad7fd6c93f406"
+dependencies = [
+ "deboa 0.1.5-beta.7 (registry+https://github.com/rust-lang/crates.io-index)",
  "futures-io",
  "futures-rustls",
  "rustls",
@@ -603,11 +633,12 @@ dependencies = [
 
 [[package]]
 name = "deboa-tokio"
-version = "0.1.4-beta.7"
+version = "0.1.4-beta.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ec6455cbecf9c2703fc93d74018eaa5ff34cb4fadcea570d7a83aa28322568bc"
+checksum = "91280d592ed64f6e8ab53461fe7cf8e667d1b1e4307faedc68f83c0c89bf506e"
 dependencies = [
- "deboa 0.1.5-beta.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "deboa 0.1.5-beta.7 (registry+https://github.com/rust-lang/crates.io-index)",
+ "deboa-multipart",
  "deboa-tls",
  "deboa-ws",
  "hashbrown 0.17.1",
@@ -628,16 +659,14 @@ dependencies = [
 
 [[package]]
 name = "deboa-ws"
-version = "0.1.0-beta.4"
+version = "0.1.0-beta.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e23ae8a4383a101403c6ed5fef95567c658f4bb592b5af45fbe9bfcecc48f3c9"
+checksum = "66c79fa63e3e63ba3661dc5bd095ba3b6f66bbaa20005cca2de84d6bf450aa67"
 dependencies = [
  "base64",
- "deboa 0.1.5-beta.6 (registry+https://github.com/rust-lang/crates.io-index)",
- "futures-util",
+ "deboa 0.1.5-beta.7 (registry+https://github.com/rust-lang/crates.io-index)",
  "http",
  "hyper",
- "hyper-body-utils",
  "hyper-util",
  "pin-project-lite",
  "rand",
@@ -2324,19 +2353,6 @@ name = "target-tuple"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "876fef147edbcbddc8ac5cbbba92c7b86519e314e86638596c09673b2ed01e7f"
-
-[[package]]
-name = "tempfile"
-version = "3.27.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "32497e9a4c7b38532efcdebeef879707aa9f794296a4f0244f6f69e9bc8574bd"
-dependencies = [
- "fastrand",
- "getrandom 0.4.3",
- "once_cell",
- "rustix",
- "windows-sys 0.61.2",
-]
 
 [[package]]
 name = "termcolor"
