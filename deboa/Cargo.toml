@@ -1,6 +1,6 @@
 [package]
 name = "deboa"
-version = "0.1.5-beta.7"
+version = "0.1.5"
 edition = "2024"
 authors = ["Rogerio Araújo <rogerio.araujo@gmail.com>"]
 repository = "https://github.com/ararog/deboa-ws"
@@ -35,17 +35,11 @@ regex = { version = "1.12.4", default-features = false }
 serde = { workspace = true }
 tackle = { workspace = true }
 thiserror = "2.0.17"
-url = "2.5.8"
-urlencoding = "2.1.3"
+url = "2.5"
+urlencoding = "2.1"
 
 [dev-dependencies]
 caramelo.workspace = true
-criterion = { version = "0.8.2", features = [
-  "html_reports",
-  "async",
-  "async_smol",
-  "async_tokio",
-] }
 mime = { version = "0.3.17" }
 multer.workspace = true
 time = { version = "0.3.53" }
