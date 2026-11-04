@@ -233,29 +233,6 @@ dependencies = [
 
 [[package]]
 name = "deboa"
-version = "0.1.5-beta.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bbd4900884b33396090a6f70406d81dd361fcfc15a840968172269f8aa9aa883"
-dependencies = [
- "async-lock",
- "base64",
- "bytes",
- "hashbrown 0.17.1",
- "http",
- "http-body-util",
- "hyper",
- "hyper-body-utils",
- "log",
- "regex",
- "serde",
- "tackle",
- "thiserror 2.0.21",
- "url",
- "urlencoding",
-]
-
-[[package]]
-name = "deboa"
 version = "0.1.5"
 dependencies = [
  "async-lock",
@@ -283,13 +260,36 @@ dependencies = [
 ]
 
 [[package]]
-name = "deboa-extras"
-version = "0.1.1-beta.6"
+name = "deboa"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a107c8c5674d3011a61c983e9309ebea8e6df1e221a928410a1ae76dd15ec380"
+checksum = "34a5efeb46424514ea2b2f6a988cd2c0148b45e2053ae927ae11909619c5e24d"
+dependencies = [
+ "async-lock",
+ "base64",
+ "bytes",
+ "hashbrown 0.17.1",
+ "http",
+ "http-body-util",
+ "hyper",
+ "hyper-body-utils",
+ "log",
+ "regex",
+ "serde",
+ "tackle",
+ "thiserror 2.0.21",
+ "url",
+ "urlencoding",
+]
+
+[[package]]
+name = "deboa-extras"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "31d35b6cecc6e15cd74af8989f2373ee22ad98890ee0016634616ab7111c3002"
 dependencies = [
  "bytes",
- "deboa 0.1.5-beta.7",
+ "deboa 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "futures",
  "http",
  "hyper",
@@ -310,7 +310,7 @@ dependencies = [
 name = "deboa-macros"
 version = "0.1.0"
 dependencies = [
- "deboa 0.1.5-beta.7",
+ "deboa 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "deboa-extras",
  "deboa-tokio",
  "http",
@@ -331,7 +331,7 @@ dependencies = [
  "async-stream",
  "base64",
  "bytes",
- "deboa 0.1.5-beta.7",
+ "deboa 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "futures",
  "http-body",
  "http-body-util",
@@ -344,7 +344,7 @@ version = "0.1.0-beta.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6f71cee433cac4b3f44ef063fdf8fd6f55fc179ff7d2ddf3bb1ad7fd6c93f406"
 dependencies = [
- "deboa 0.1.5-beta.7",
+ "deboa 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "futures-io",
  "futures-rustls",
  "rustls",
@@ -359,7 +359,7 @@ version = "0.1.4-beta.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "91280d592ed64f6e8ab53461fe7cf8e667d1b1e4307faedc68f83c0c89bf506e"
 dependencies = [
- "deboa 0.1.5-beta.7",
+ "deboa 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "deboa-multipart",
  "deboa-tls",
  "deboa-ws",
@@ -386,7 +386,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "66c79fa63e3e63ba3661dc5bd095ba3b6f66bbaa20005cca2de84d6bf450aa67"
 dependencies = [
  "base64",
- "deboa 0.1.5-beta.7",
+ "deboa 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "http",
  "hyper",
  "hyper-util",
@@ -1724,12 +1724,11 @@ checksum = "f8fadd59c855ef2080decdef8ff161eb6661b86933c9d82e5ba29dc602a55aba"
 
 [[package]]
 name = "simd-json"
-version = "0.18.1"
+version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6ebe141eb4a23ecc4d5de93fa5b139ac65dc07c38037a2fe9a8fb7c9d36bd832"
+checksum = "e8f2e4d523646f7da6dde3983bd18ede0babc21c258ab708b3dd93ea0259719d"
 dependencies = [
  "halfbrown",
- "ref-cast",
  "serde",
  "serde_json",
  "simdutf8",
@@ -2177,9 +2176,9 @@ dependencies = [
 
 [[package]]
 name = "value-trait"
-version = "0.12.2"
+version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f3f4b4a98dfe54bc9ed3641af7ffcb837240269627dbd5cb047d13daa39736cc"
+checksum = "545a3d7089f11f1741d12963c057adf9443fc24325110a6a6daf582e825fd51b"
 dependencies = [
  "float-cmp",
  "halfbrown",
