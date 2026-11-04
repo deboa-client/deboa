@@ -17,7 +17,7 @@ license = "MIT OR Apache-2.0"
 rust-version = "1.85.0"
 
 [workspace.dependencies]
-async-lock = "3.4.2"
+async-lock = "3.5.0"
 base64 = { version = "0.23.0" }
 bytes = { version = "1.11" }
 caramelo = "0.1.5"
@@ -33,7 +33,7 @@ multer = "3.1.0"
 rstest = "0.28.0"
 serde = { version = "1.0.217", features = ["derive"] }
 tackle = { version = "0.1.1" }
-tokio = { version = "1.53.2", features = ["fs", "macros", "rt-multi-thread"]}
+tokio = { version = "1.54.1", features = ["fs", "macros", "rt-multi-thread"]}
 
 [profile.test]
 lto = false
