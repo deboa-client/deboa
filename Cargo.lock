@@ -233,29 +233,6 @@ dependencies = [
 
 [[package]]
 name = "deboa"
-version = "0.1.5-beta.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bbd4900884b33396090a6f70406d81dd361fcfc15a840968172269f8aa9aa883"
-dependencies = [
- "async-lock",
- "base64",
- "bytes",
- "hashbrown 0.17.1",
- "http",
- "http-body-util",
- "hyper",
- "hyper-body-utils",
- "log",
- "regex",
- "serde",
- "tackle",
- "thiserror 2.0.21",
- "url",
- "urlencoding",
-]
-
-[[package]]
-name = "deboa"
 version = "0.1.5"
 dependencies = [
  "async-lock",
@@ -283,13 +260,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "deboa"
+version = "0.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "34a5efeb46424514ea2b2f6a988cd2c0148b45e2053ae927ae11909619c5e24d"
+dependencies = [
+ "async-lock",
+ "base64",
+ "bytes",
+ "hashbrown 0.17.1",
+ "http",
+ "http-body-util",
+ "hyper",
+ "hyper-body-utils",
+ "log",
+ "regex",
+ "serde",
+ "tackle",
+ "thiserror 2.0.21",
+ "url",
+ "urlencoding",
+]
+
+[[package]]
 name = "deboa-extras"
 version = "0.1.1-beta.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a107c8c5674d3011a61c983e9309ebea8e6df1e221a928410a1ae76dd15ec380"
 dependencies = [
  "bytes",
- "deboa 0.1.5-beta.7",
+ "deboa 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "futures",
  "http",
  "hyper",
@@ -310,7 +310,7 @@ dependencies = [
 name = "deboa-macros"
 version = "0.1.0"
 dependencies = [
- "deboa 0.1.5-beta.7",
+ "deboa 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "deboa-extras",
  "deboa-tokio",
  "http",
@@ -323,43 +323,39 @@ dependencies = [
 
 [[package]]
 name = "deboa-multipart"
-version = "0.1.0-beta.1"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "94bb25918cc515041a757e0a05acafaeef298d48ea6a84b634e4ab75b6f94c2e"
+checksum = "57e6f00ab3be26792ab0969c509b3123f88b83a1fdbf4bfd1334f7b6770cd64f"
 dependencies = [
  "async-lock",
  "async-stream",
- "base64",
  "bytes",
- "deboa 0.1.5-beta.7",
+ "deboa 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "futures",
  "http-body",
- "http-body-util",
  "rand",
 ]
 
 [[package]]
 name = "deboa-tls"
-version = "0.1.0-beta.5"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6f71cee433cac4b3f44ef063fdf8fd6f55fc179ff7d2ddf3bb1ad7fd6c93f406"
+checksum = "b6ba7255803c2b5723a14f8c0ee3dfd72e00cb986bb996a0f9847ce9a7aa5a07"
 dependencies = [
- "deboa 0.1.5-beta.7",
+ "deboa 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "futures-io",
  "futures-rustls",
  "rustls",
- "rustls-native-certs",
- "rustls-pki-types",
  "webpki-roots",
 ]
 
 [[package]]
 name = "deboa-tokio"
-version = "0.1.4-beta.8"
+version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "91280d592ed64f6e8ab53461fe7cf8e667d1b1e4307faedc68f83c0c89bf506e"
+checksum = "b3a27dbfbd487e07af9da31680df88f6aa7fbe01e17beec3918ab986e52ca170"
 dependencies = [
- "deboa 0.1.5-beta.7",
+ "deboa 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "deboa-multipart",
  "deboa-tls",
  "deboa-ws",
@@ -381,12 +377,12 @@ dependencies = [
 
 [[package]]
 name = "deboa-ws"
-version = "0.1.0-beta.5"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "66c79fa63e3e63ba3661dc5bd095ba3b6f66bbaa20005cca2de84d6bf450aa67"
+checksum = "5b930799378ac63a108ca2cb9183a2ddc91130ecdb3e2cd3822be5425f454b81"
 dependencies = [
  "base64",
- "deboa 0.1.5-beta.7",
+ "deboa 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "http",
  "hyper",
  "hyper-util",
@@ -419,12 +415,6 @@ name = "dunce"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "92773504d58c093f6de2459af4af33faa518c13451eb8f2b5698ed3d36e7c813"
-
-[[package]]
-name = "either"
-version = "1.19.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0e9c71c2167ca323c882b99918929403426e2373ea17242ff5653e0d5e1058be"
 
 [[package]]
 name = "encoding_rs"
@@ -951,15 +941,6 @@ checksum = "cc4e190f5d26ca7051642629da2c52fc03bde85a03197c99408dcd291734c855"
 dependencies = [
  "equivalent",
  "hashbrown 0.17.1",
-]
-
-[[package]]
-name = "itertools"
-version = "0.13.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "413ee7dfc52ee1a4949ceeb7dbc8a33f2d6c088194d9f922fb8318faf1f01186"
-dependencies = [
- "either",
 ]
 
 [[package]]
@@ -2274,9 +2255,9 @@ dependencies = [
 
 [[package]]
 name = "webpki-roots"
-version = "1.0.10"
+version = "1.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1c1c8e20c8a38fc7d65abfe74eb7280e4aa667e8eec8bc84996d2874810748d9"
+checksum = "f5f280bbb2b287bc8e7de7e3852945a0ff50d1bbcb5ed42b6c7a568c546df171"
 dependencies = [
  "rustls-pki-types",
 ]
@@ -2398,26 +2379,13 @@ checksum = "3ad82d2a33cdc9674dc7465672f271e096168fcdbe0f799d9e6db8c5892679dc"
 
 [[package]]
 name = "ws-framer"
-version = "0.3.2"
+version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bacd6cff21323641597fe251e294f823e04292202a6e3c9721a1e8b82bea57bf"
+checksum = "dff96a9b275d0beb2ccdbca7faec38c4fb84fdab77a931867205338cd2466404"
 dependencies = [
  "getrandom 0.4.3",
  "httparse",
  "itoa",
- "ws-framer-macros",
-]
-
-[[package]]
-name = "ws-framer-macros"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "67fe343b024b086505b3c647de6eae0c26235934cb9138a180e3ac5f97a6aeda"
-dependencies = [
- "itertools",
- "proc-macro2",
- "quote",
- "syn 2.0.119",
 ]
 
 [[package]]
