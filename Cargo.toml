@@ -30,7 +30,7 @@ http = "1"
 hyper = { version = "1.11.1", features = ["client"], default-features = false }
 hyper-body-utils = { version = "0.1.18", default-features = false }
 multer = "3.1.0"
-rstest = "0.28.0"
+rstest = "0.29.0"
 serde = { version = "1.0.217", features = ["derive"] }
 tackle = { version = "0.1.1" }
 tokio = { version = "1.54.1", features = ["fs", "macros", "rt-multi-thread"]}
